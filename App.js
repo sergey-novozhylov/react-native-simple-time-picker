@@ -17,30 +17,36 @@ const styles = StyleSheet.create({
 
 const MAX_HOURS = 24;
 const MAX_MINUTES = 60;
+const MAX_SECONDS = 60;
 
 export default class TimePicker extends Component {
   static propTypes = {
     selectedHours: PropTypes.number,
     selectedMinutes: PropTypes.number,
+    selectedSeconds: PropTypes.number,
     onChange: PropTypes.func,
     hoursUnit: PropTypes.string,
     minutesUnit: PropTypes.string,
+    secondsUnit: PropTypes.string,
   }
 
   static defaultProps = {
     selectedHours: 0,
     selectedMinutes: 0,
+    selectedSeconds: 0,
     onChange: null,
     hoursUnit: '',
     minutesUnit: '',
+    secondsUnit: '',
   }
 
   constructor(props) {
     super(props);
-    const { selectedHours, selectedMinutes } = props;
+    const { selectedHours, selectedMinutes, selectedSeconds } = props;
     this.state = {
       selectedHours,
       selectedMinutes,
+      selectedSeconds,
     };
   }
 
@@ -66,13 +72,24 @@ export default class TimePicker extends Component {
     return items;
   }
 
+  getSecondsImtes = () => {
+    const items = [];
+    const { secondsUnit } = this.props;
+    for (let i = 0; i <= MAX_SECONDS; i++) {
+      items.push(
+        <Picker.Item key={i} value={i} label={`${i.toString()}${secondsUnit}`} />,
+      );
+    }
+    return items;  
+  }
+
   handleChangeHours = (itemValue) => {
     const { onChange } = this.props;
     this.setState({
       selectedHours: itemValue,
     }, () => {
-      const { selectedHours, selectedMinutes } = this.state;
-      onChange(selectedHours, selectedMinutes);
+      const { selectedHours, selectedMinutes, selectedSeconds } = this.state;
+      onChange(selectedHours, selectedMinutes, selectedSeconds);
     });
   }
 
@@ -81,13 +98,23 @@ export default class TimePicker extends Component {
     this.setState({
       selectedMinutes: itemValue,
     }, () => {
-      const { selectedHours, selectedMinutes } = this.state;
-      onChange(selectedHours, selectedMinutes);
+      const { selectedHours, selectedMinutes, selectedSeconds } = this.state;
+      onChange(selectedHours, selectedMinutes, selectedSeconds);
+    });
+  }
+
+  handleChangeSeconds = (itemValue) => {
+    const { onChange } = this.props;
+    this.setState({
+      selectedSeconds: itemValue,
+    }, () => {
+      const { selectedHours, selectedMinutes, selectedSeconds } = this.state;
+      onChange(selectedHours, selectedMinutes, selectedSeconds);
     });
   }
 
   render() {
-    const { selectedHours, selectedMinutes } = this.state;
+    const { selectedHours, selectedMinutes, selectedSeconds } = this.state;
     return (
       <View style={styles.container}>
         <Picker
@@ -104,6 +131,13 @@ export default class TimePicker extends Component {
         >
           {this.getMinutesImtes()}
         </Picker>
+        <Picker
+          style={styles.picker}
+          selectedValue={selectedSeconds}
+          onValueChange={(itemValue) => this.handleChangeSeconds(itemValue)}
+        >
+          {this.getSecondsImtes()}
+        </Picker>        
       </View>
     );
   }
