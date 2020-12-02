@@ -55,7 +55,7 @@ export default class TimePicker extends Component {
     const { hoursUnit } = this.props;
     for (let i = 0; i <= MAX_HOURS; i++) {
       items.push(
-        <Picker.Item key={i} value={i} label={`${i.toString()}${hoursUnit}`} />,
+        <Picker.Item key={i} value={`${i}`} label={`${i.toString()}${hoursUnit}`} />,
       );
     }
     return items;
