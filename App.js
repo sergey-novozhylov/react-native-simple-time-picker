@@ -65,8 +65,12 @@ export default class TimePicker extends Component {
     const items = [];
     const { minutesUnit } = this.props;
     for (let i = 0; i <= MAX_MINUTES; i++) {
+      let zeroDigit = '';
+      if (i<10) {
+        zeroDigit = '0';
+      }
       items.push(
-        <Picker.Item key={i} value={i} label={`${i.toString()}${minutesUnit}`} />,
+        <Picker.Item key={i} value={`${zeroDigit}${i}`} label={`${zeroDigit}${i.toString()}${minutesUnit}`} />,
       );
     }
     return items;
@@ -76,8 +80,12 @@ export default class TimePicker extends Component {
     const items = [];
     const { secondsUnit } = this.props;
     for (let i = 0; i <= MAX_SECONDS; i++) {
+      let zeroDigit = '';
+      if (i<10) {
+        zeroDigit = '0';
+      }      
       items.push(
-        <Picker.Item key={i} value={i} label={`${i.toString()}${secondsUnit}`} />,
+        <Picker.Item key={i} value={`${zeroDigit}${i}`} label={`${zeroDigit}${i.toString()}${secondsUnit}`} />,
       );
     }
     return items;  
